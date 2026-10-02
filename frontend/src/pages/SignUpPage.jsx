@@ -15,7 +15,6 @@ const SignUpPage = () => {
     const Email = email.current.value;
     const Username = username.current.value;
     const Pass = password.current.value;
-    console.log(Username, Email, Pass);
     const data = {
       email: Email,
       fullName: Username,

@@ -13,7 +13,6 @@ const LoginPage = () => {
     e.preventDefault();
     const Email = email.current.value;
     const Pass = password.current.value;
-    console.log(Email, Pass);
     const data = {
       email: Email,
       password: Pass,
