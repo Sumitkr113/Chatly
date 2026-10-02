@@ -23,3 +23,9 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+# Local project context
+PROJECT_CONTEXT.md
+progress.md
+decisions.md
+todo.md
