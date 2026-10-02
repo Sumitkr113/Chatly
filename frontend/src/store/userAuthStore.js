@@ -91,13 +91,16 @@ export const userAuthStore = create((set, get) => ({
     connectSocket: () => {
         const { authUser } = get()
         if (!authUser || get().socket?.connected) return;
+        // Authentication is done server-side via the httpOnly "jwt" cookie.
+        // No userId is sent from the client.
         const socket = io(BASE_URL, {
-            query: {
-                userId: authUser._id,
-            }
+            withCredentials: true,
         })
         socket.connect()
         set({ socket: socket })
+        socket.on("connect_error", (err) => {
+            console.log("Socket connection error:", err.message)
+        })
         socket.on("getOnlineUsers", (userIds) => {
             set({ onlineUsers: userIds })
         })
