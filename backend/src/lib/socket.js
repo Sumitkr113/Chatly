@@ -1,30 +1,31 @@
-const { Server } = require("socket.io")
-const http = require("http")
-const express = require("express")
+const { Server } = require("socket.io");
+const http = require("http");
+const express = require("express");
 
+const app = express();
+const server = http.createServer(app);
 
-const app = express()
-const server = http.createServer(app)
 const io = new Server(server, {
     cors: {
-        origin: ["https://gochatlly.onrender.com"],
-        // origin: ["http://localhost:5173"],
+        origin: [process.env.CLIENT_URL],
     },
+});
 
-})
 const getReceiverSocketId = (userId) => {
-    return userSocketMap[userId]
-}
-const userSocketMap = {}
+    return userSocketMap[userId];
+};
+
+const userSocketMap = {};
+
 io.on("connection", (socket) => {
-    console.log("A user connected", socket.id)
+    console.log("A user connected", socket.id);
 
     const userId = socket.handshake.query.userId;
+
     if (userId) {
         userSocketMap[userId] = socket.id;
         io.emit("getOnlineUsers", Object.keys(userSocketMap));
     }
-
 
     socket.on("joinGroup", (groupId) => {
         socket.join(groupId);
@@ -42,4 +43,5 @@ io.on("connection", (socket) => {
         io.emit("getOnlineUsers", Object.keys(userSocketMap));
     });
 });
-module.exports = { io, app, server, getReceiverSocketId }
+
+module.exports = { io, app, server, getReceiverSocketId };
